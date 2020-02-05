@@ -9,25 +9,36 @@ class PublicAPI:
         if not os.path.isfile(file_path):
             raise FileExistsError
         else:
-            with open(file_path, 'rb') as f:
-                data = {'file': f.read()}
-            response = requests.post(
-                url = 'https://www.virustotal.com/api/v3/files',
-                headers = {'x-apikey': self.api_key},
-                files = data)
-            return response.json()
+            if os.path.getsize(file_path) < 32000000:
+                with open(file_path, 'rb') as f:
+                    data = {'file': f.read()}
+                response = requests.post(
+                    url = 'https://www.virustotal.com/api/v3/files',
+                    headers = {'x-apikey': self.api_key},
+                    files = data
+                )
+                return response.json()
+            else:
+                return {'error' : 'The total payload size can not exceed 32MB. For uploading larger files see the GET /files/upload_url endpoint.'}
 
-    def post_files_analyse(self, id):
-        response = requests.post(
-            url='https://www.virustotal.com/api/v3/files/{}/analyse'.format(id),
-            headers={'x-apikey': self.api_key},
+    def get_files_upload_url(self):
+        response = requests.get(
+            url='https://www.virustotal.com/api/v3/files/upload_url',
+            headers={'x-apikey': self.api_key}
         )
         return response.json()
 
     def get_file_info(self, id):
         response = requests.get(
             url='https://www.virustotal.com/api/v3/files/{}'.format(id),
-            headers={'x-apikey': self.api_key},
+            headers={'x-apikey': self.api_key}
+        )
+        return response.json()
+
+    def post_files_analyse(self, id):
+        response = requests.post(
+            url='https://www.virustotal.com/api/v3/files/{}/analyse'.format(id),
+            headers={'x-apikey': self.api_key}
         )
         return response.json()
 
