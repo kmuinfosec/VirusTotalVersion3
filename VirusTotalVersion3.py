@@ -65,6 +65,13 @@ class PublicAPI:
         )
         return response.json()
 
+    def get_files_votes(self, id):
+        response = requests.get(
+            url='https://www.virustotal.com/api/v3/files/{}/votes'.format(id),
+            headers={'x-apikey': self.api_key}
+        )
+        return response.json()
+
 class PrivateAPI(PublicAPI):
     def __init__(self, api_key):
         super(PrivateAPI, self).__init__(api_key)
