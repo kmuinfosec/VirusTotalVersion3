@@ -89,8 +89,15 @@ class PublicAPI:
         return response.json()
 
     def get_files_relationships(self, id, relationship):
-        response = requests.post(
+        response = requests.get(
             url='https://www.virustotal.com/api/v3/files/{}/{}'.format(id, relationship),
+            headers={'x-apikey': self.api_key},
+        )
+        return response.json()
+
+    def get_file_behaviours_pcap(self, sandbox_id):
+        response = requests.get(
+            url='https://www.virustotal.com/api/v3/file_behaviours/{}/pcap'.format(sandbox_id),
             headers={'x-apikey': self.api_key},
         )
         return response.json()
