@@ -98,3 +98,9 @@ class PrivateAPI(PublicAPI):
             headers={'x-apikey': self.api_key}
         )
         return response.json()
+
+    def get_files_download(self, id):
+        response = requests.get(
+            url='https://www.virustotal.com/api/v3/files/{}/download'.format(id),
+            headers={'x-apikey': self.api_key}
+        )
