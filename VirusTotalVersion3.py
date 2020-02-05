@@ -43,9 +43,25 @@ class PublicAPI:
         return response.json()
 
     def get_files_comments(self, id):
-        response = requests.post(
+        response = requests.get(
             url='https://www.virustotal.com/api/v3/files/{}/comments'.format(id),
             headers={'x-apikey': self.api_key}
+        )
+        return response.json()
+
+    def post_files_comments(self, text):
+        data = {
+            "data": {
+                "type": "comment",
+                "attributes": {
+                    "text": text
+                }
+            }
+        }
+        response = requests.post(
+            url='https://www.virustotal.com/api/v3/files/{id}/comments'.format(id),
+            headers={'x-apikey': self.api_key},
+            data=data
         )
         return response.json()
 
