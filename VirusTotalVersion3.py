@@ -51,10 +51,10 @@ class PublicAPI:
 
     def post_files_comments(self, text):
         data = {
-            "data": {
-                "type": "comment",
-                "attributes": {
-                    "text": text
+            'data': {
+                'type': 'comment',
+                'attributes': {
+                    'text': text
                 }
             }
         }
@@ -69,6 +69,22 @@ class PublicAPI:
         response = requests.get(
             url='https://www.virustotal.com/api/v3/files/{}/votes'.format(id),
             headers={'x-apikey': self.api_key}
+        )
+        return response.json()
+
+    def post_files_votes(self, id, verdict):
+        data = {
+            'data': {
+                'type': 'vote',
+                'attributes': {
+                    'verdict': 'harmless'
+                }
+            }
+        }
+        response = requests.post(
+            url='https://www.virustotal.com/api/v3/files/{}/votes'.format(id),
+            headers={'x-apikey': self.api_key},
+            data=data
         )
         return response.json()
 
